@@ -51,11 +51,12 @@ public class Capture implements Comparable<Capture> , Locatable  {
 	public void setBSSId(String bSSId) {
 		BSSId = bSSId;
 	}
-	@javax.jdo.annotations.Persistent
+	
     private Location location;
 	
 	@javax.jdo.annotations.Column(allowsNull="true")
     @MemberOrder(sequence = "10")
+	@javax.jdo.annotations.Persistent
     public Location getLocation() { 
         return location;
     }
