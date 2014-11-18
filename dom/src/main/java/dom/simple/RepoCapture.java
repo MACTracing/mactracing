@@ -29,7 +29,7 @@ public class RepoCapture extends AbstractFactoryAndRepository {
         return container.allInstances(Capture.class);
     }
 
-    public String captureUpload(Blob captureMacFile,Blob captureGPSFile) {
+    public String captureUpload(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) {
         return "Upload sucessfull";
     }
     
