@@ -2,8 +2,6 @@ package dom.simple;
 
 
 import java.util.List;
-
-import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.Bookmarkable;
@@ -14,9 +12,9 @@ import org.apache.isis.applib.annotation.ActionSemantics.Of;
 import org.apache.isis.applib.value.Blob;
 
 
-@Named("Capture")
+
 @DomainService(menuOrder = "40", repositoryFor = Capture.class)
-public class RepoCapture extends AbstractFactoryAndRepository {
+public class RepoCapture {
     
 	public String getId() {
         return "Capture";
@@ -33,6 +31,13 @@ public class RepoCapture extends AbstractFactoryAndRepository {
         return "Upload sucessfull";
     }
     
+    public Capture create (String bssid,String mac) {
+        final Capture capture = container.newTransientInstance(Capture.class);
+        capture.setBSSId(bssid);
+        capture.setMac(mac);
+        container.persist(capture);
+    	return capture;
+    }
     @javax.inject.Inject 
     DomainObjectContainer container;
 	
