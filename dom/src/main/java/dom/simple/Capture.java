@@ -8,6 +8,9 @@ import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ObjectType;
 import org.apache.isis.applib.util.ObjectContracts;
 import org.apache.isis.applib.value.Date;
+import org.isisaddons.wicket.gmap3.cpt.applib.Locatable;
+import org.isisaddons.wicket.gmap3.cpt.applib.Locatable;
+import org.isisaddons.wicket.gmap3.cpt.applib.Location;
 @javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE)
 @javax.jdo.annotations.DatastoreIdentity(
         strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY,
@@ -17,7 +20,7 @@ import org.apache.isis.applib.value.Date;
         column="version")
 @ObjectType("Captura")
 @Bookmarkable
-public class Capture implements Comparable<Capture> {
+public class Capture implements Comparable<Capture> ,Locatable  {
 
 	private Date datetime;
 	private String mac;
@@ -48,6 +51,17 @@ public class Capture implements Comparable<Capture> {
 	public void setBSSId(String bSSId) {
 		BSSId = bSSId;
 	}
+	@javax.jdo.annotations.Persistent
+    private Location location;
+	
+	@javax.jdo.annotations.Column(allowsNull="false")
+    @MemberOrder(name="Detail", sequence = "10")
+    public Location getLocation() { 
+        return location;
+    }
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 	
     @javax.inject.Inject
     @SuppressWarnings("unused")

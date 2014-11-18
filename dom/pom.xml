@@ -113,6 +113,12 @@
             <artifactId>objenesis</artifactId>
             <scope>test</scope>
         </dependency>
+        
+        <dependency>
+    		<groupId>org.isisaddons.wicket.gmap3</groupId>
+    		<artifactId>isis-wicket-gmap3-cpt</artifactId>
+    		<version>1.7.0</version>
+		</dependency>
     </dependencies>
 
 </project>

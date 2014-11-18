@@ -21,6 +21,7 @@ public class RepoCapture extends AbstractFactoryAndRepository {
 	public String getId() {
         return "Capture";
     }
+	
 	@Bookmarkable
     @ActionSemantics(Of.SAFE)
     @MemberOrder(sequence = "1")
@@ -31,6 +32,7 @@ public class RepoCapture extends AbstractFactoryAndRepository {
     public String captureUpload(Blob captureMacFile,Blob captureGPSFile) {
         return "Upload sucessfull";
     }
+    
     @javax.inject.Inject 
     DomainObjectContainer container;
 	
