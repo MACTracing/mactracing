@@ -4,6 +4,7 @@ import javax.jdo.annotations.IdentityType;
 import javax.jdo.annotations.VersionStrategy;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.Bookmarkable;
+import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.ObjectType;
 import org.apache.isis.applib.util.ObjectContracts;
 import org.apache.isis.applib.value.Date;
@@ -24,19 +25,22 @@ public class Capture implements Comparable<Capture> {
     
 	
 	@javax.jdo.annotations.Column(allowsNull="false")
-    private Date getDatetime() {
+	@MemberOrder(sequence = "1")
+	public Date getDatetime() {
 		return datetime;
 	}
-	private void setDatetime(Date datetime) {
+	public void setDatetime(Date datetime) {
 		this.datetime = datetime;
 	}
 	@javax.jdo.annotations.Column(allowsNull="true")
+	@MemberOrder(sequence = "2")
 	public String getMac() {
 		return mac;
 	}
 	public void setMac(String mac) {
 		this.mac = mac;
 	}
+	@MemberOrder(sequence = "3")
     @javax.jdo.annotations.Column(allowsNull="true")
 	public String getBSSId() {
 		return BSSId;
