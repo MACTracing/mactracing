@@ -23,6 +23,7 @@ import org.isisaddons.wicket.gmap3.cpt.applib.Location;
 
 
 @DomainService(menuOrder = "40", repositoryFor = Capture.class)
+@Named("Capture")
 public class RepoCapture {
     
 	public String getId() {
