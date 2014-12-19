@@ -106,7 +106,7 @@ public class RepoCapture {
     			{
     			location = new Location(NMEA.Latitude2Decimal(cord[1], cord[2]),NMEA.Longitude2Decimal(cord[3], cord[4]));
     			}
-    			texto = texto + lineGPS;
+    			
     		}
     		
     		
@@ -120,12 +120,9 @@ public class RepoCapture {
     	     //"Time","Receiver address","Destination address","Transmitter address","Source address","BSS Id","SSID"
     	     //"2014-12-17 02:45:00.641906000","ff:ff:ff:ff:ff:ff","ff:ff:ff:ff:ff:ff","8c:3a:e3:10:60:45","8c:3a:e3:10:60:45","ff:ff:ff:ff:ff:ff",""
     	     String[] splitter = linea.split(",");
-    	     String dateTimeGPS;
-    	     
+    	     String dateTimeGPS;    	     
     	    if (splitter[0]!="\"Time\"")
-    	    {
-    	    	
-    	    	
+    	    {	    		
     	    Capture cap =container.newTransientInstance(Capture.class);
  			cap.setBSSId(splitter[5].replace("\"", ""));
  			cap.setReceiverAddress(splitter[1].replace("\"", ""));
@@ -141,8 +138,7 @@ public class RepoCapture {
     	
     	buf.close();
     	bufGPS.close();
-		return texto;
-    	
+		return "ok";    	
     	
     }
 
