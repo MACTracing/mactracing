@@ -84,14 +84,48 @@ public class RepoCapture {
     	BufferedReader buf = new BufferedReader(new FileReader(fileMAC));
     	String linea="";
     	String texto="";
+    	File fileGPS = new File("gps");
+    	FileOutputStream fileOutputStreamGPS = new FileOutputStream(fileGPS);
+    	captureGPSFile.writeBytesTo(fileOutputStreamGPS);	
+    	fileOutputStreamGPS.close();
+    	BufferedReader bufGPS = new BufferedReader(new FileReader(fileGPS));
+    	
+    	Location location = new Location(); 
+    	String lineGPS="";
+    	do
+    	{
+    		lineGPS=bufGPS.readLine();
+    		//$GPGLL,3866.63489,S,06812.71590,W,220554.00,A,A*6C
+    		if (lineGPS.contains("$GPGLL"))
+    		{
+    			String[] cord= lineGPS.split(",");
+    			if (cord[1].isEmpty() || cord[2].isEmpty() || cord[3].isEmpty() || cord[4].isEmpty())
+    			{
+    			}
+    			else
+    			{
+    			location = new Location(NMEA.Latitude2Decimal(cord[1], cord[2]),NMEA.Longitude2Decimal(cord[3], cord[4]));
+    			}
+    			texto = texto + lineGPS;
+    		}
+    		
+    		
+    	}while(lineGPS.contains("$GPGLL")!=true);
+    	
+    	
+    	
     	while ((linea=buf.readLine())!=null)
     	{
-    	     texto = texto +(char)13 +linea;
+    	
     	     //"Time","Receiver address","Destination address","Transmitter address","Source address","BSS Id","SSID"
     	     //"2014-12-17 02:45:00.641906000","ff:ff:ff:ff:ff:ff","ff:ff:ff:ff:ff:ff","8c:3a:e3:10:60:45","8c:3a:e3:10:60:45","ff:ff:ff:ff:ff:ff",""
     	     String[] splitter = linea.split(",");
+    	     String dateTimeGPS;
+    	     
     	    if (splitter[0]!="\"Time\"")
     	    {
+    	    	
+    	    	
     	    Capture cap =container.newTransientInstance(Capture.class);
  			cap.setBSSId(splitter[5].replace("\"", ""));
  			cap.setReceiverAddress(splitter[1].replace("\"", ""));
@@ -100,10 +134,13 @@ public class RepoCapture {
  			cap.setSourceAddress(splitter[4].replace("\"", ""));
  			cap.setBSSId(splitter[5].replace("\"", ""));
  			cap.setSSID(splitter[6].replace("\"", ""));
+ 			cap.setLocation(location);
  			container.persistIfNotAlready(cap);
     	    }
     	}
+    	
     	buf.close();
+    	bufGPS.close();
 		return texto;
     	
     	
