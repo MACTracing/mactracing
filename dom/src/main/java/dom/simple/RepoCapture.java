@@ -77,11 +77,11 @@ public class RepoCapture {
 
     public String captureUpload2(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException {
         
-    	File file = new File("mac");
-    	FileOutputStream fileOutputStream = new FileOutputStream(file);
+    	File fileMAC = new File("mac");
+    	FileOutputStream fileOutputStream = new FileOutputStream(fileMAC);
     	captureMacFile.writeBytesTo(fileOutputStream);	
     	fileOutputStream.close();
-    	BufferedReader buf = new BufferedReader(new FileReader(file));
+    	BufferedReader buf = new BufferedReader(new FileReader(fileMAC));
     	String linea="";
     	String texto="";
     	while ((linea=buf.readLine())!=null)
