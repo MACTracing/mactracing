@@ -58,7 +58,6 @@ public class RepoCapture {
     			{
     			Capture cap =container.newTransientInstance(Capture.class);
     			cap.setBSSId(cord[1]);
-    			cap.setMac(cord[3]);
     			//format example 51,520283;0,082858
     			
     			Location location = new Location(NMEA.Latitude2Decimal(cord[1], cord[2]),NMEA.Longitude2Decimal(cord[3], cord[4]));
