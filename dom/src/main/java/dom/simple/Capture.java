@@ -21,28 +21,14 @@ import org.isisaddons.wicket.gmap3.cpt.applib.Location;
 @Bookmarkable
 public class Capture implements Comparable<Capture> , Locatable  {
 
-	//private Date datetime;
-	private String mac;
+
 	private String BSSId;
-    
+    private String receiverAddress;
+    private String destinationAddress;
+    private String TransmitterAddress;
+    private String SourceAddress;
+    private String SSID;
 	
-	/*@javax.jdo.annotations.Column(allowsNull="false")
-	@MemberOrder(sequence = "1")
-	public Date getDatetime() {
-		return datetime;
-	}
-	public void setDatetime(Date datetime) {
-		this.datetime = datetime;
-	}*/
-	@Title
-	@javax.jdo.annotations.Column(allowsNull="true")
-	@MemberOrder(sequence = "2")
-	public String getMac() {
-		return mac;
-	}
-	public void setMac(String mac) {
-		this.mac = mac;
-	}
 	@MemberOrder(sequence = "3")
     @javax.jdo.annotations.Column(allowsNull="true")
 	public String getBSSId() {
@@ -72,5 +58,41 @@ public class Capture implements Comparable<Capture> , Locatable  {
     public int compareTo(Capture capture) {
         return ObjectContracts.compare(this, capture, "mac");
     }
+    @javax.jdo.annotations.Column(allowsNull="true")
+	public String getReceiverAddress() {
+		return receiverAddress;
+	}
+	public void setReceiverAddress(String receiverAddress) {
+		this.receiverAddress = receiverAddress;
+	}
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getDestinationAddress() {
+		return destinationAddress;
+	}
+	public void setDestinationAddress(String destinationAddress) {
+		this.destinationAddress = destinationAddress;
+	}
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getTransmitterAddress() {
+		return TransmitterAddress;
+	}
+	public void setTransmitterAddress(String transmitterAddress) {
+		TransmitterAddress = transmitterAddress;
+	}
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getSourceAddress() {
+		return SourceAddress;
+	}
+	public void setSourceAddress(String sourceAddress) {
+		SourceAddress = sourceAddress;
+	}
+	@javax.jdo.annotations.Column(allowsNull="true")
+	public String getSSID() {
+		return SSID;
+	}
+	public void setSSID(String sSID) {
+		SSID = sSID;
+	}
+    
 	
 }

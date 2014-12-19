@@ -72,14 +72,47 @@ public class RepoCapture {
     	
     	
     }
+
     
-    public Capture create (String bssid,String mac) {
-        final Capture capture = container.newTransientInstance(Capture.class);
-        capture.setBSSId(bssid);
-        capture.setMac(mac);
-        container.persist(capture);
-    	return capture;
+    
+
+    public String captureUpload2(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException {
+        
+    	File file = new File("mac");
+    	FileOutputStream fileOutputStream = new FileOutputStream(file);
+    	captureMacFile.writeBytesTo(fileOutputStream);	
+    	fileOutputStream.close();
+    	BufferedReader buf = new BufferedReader(new FileReader(file));
+    	String linea="";
+    	String texto="";
+    	while ((linea=buf.readLine())!=null)
+    	{
+    	     texto = texto +(char)13 +linea;
+    	     //"Time","Receiver address","Destination address","Transmitter address","Source address","BSS Id","SSID"
+    	     //"2014-12-17 02:45:00.641906000","ff:ff:ff:ff:ff:ff","ff:ff:ff:ff:ff:ff","8c:3a:e3:10:60:45","8c:3a:e3:10:60:45","ff:ff:ff:ff:ff:ff",""
+    	     String[] splitter = linea.split(",");
+    	    if (splitter[0]!="\"Time\"")
+    	    {
+    	    Capture cap =container.newTransientInstance(Capture.class);
+ 			cap.setBSSId(splitter[5].replace("\"", ""));
+ 			cap.setReceiverAddress(splitter[1].replace("\"", ""));
+ 			cap.setDestinationAddress(splitter[2].replace("\"", ""));
+ 			cap.setTransmitterAddress(splitter[3].replace("\"", ""));
+ 			cap.setSourceAddress(splitter[4].replace("\"", ""));
+ 			cap.setBSSId(splitter[5].replace("\"", ""));
+ 			cap.setSSID(splitter[6].replace("\"", ""));
+ 			container.persistIfNotAlready(cap);
+    	    }
+    	}
+    	buf.close();
+		return texto;
+    	
+    	
     }
+
+    
+    
+    
     
     
     @javax.inject.Inject 
