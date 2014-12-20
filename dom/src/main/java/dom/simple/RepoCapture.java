@@ -8,7 +8,10 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
+
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.Bookmarkable;
@@ -75,7 +78,7 @@ public class RepoCapture {
     
     
 
-    public String captureUpload2(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException {
+    public String captureUpload2(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException, ParseException {
         
     	File fileMAC = new File("mac");
     	FileOutputStream fileOutputStream = new FileOutputStream(fileMAC);
@@ -92,6 +95,7 @@ public class RepoCapture {
     	
     	Location location = new Location(); 
     	String lineGPS="";
+    	String lineFecha="";
     	do
     	{
     		lineGPS=bufGPS.readLine();
@@ -105,14 +109,13 @@ public class RepoCapture {
     			else
     			{
     			location = new Location(NMEA.Latitude2Decimal(cord[1], cord[2]),NMEA.Longitude2Decimal(cord[3], cord[4]));
-    			}
-    			
+    			}	
     		}
     		
     		
     	}while(lineGPS.contains("$GPGLL")!=true);
-    	
-    	
+    	lineFecha = bufGPS.readLine();
+    	Date dateTime = NMEA.stringNMEAToDate(lineFecha);
     	
     	while ((linea=buf.readLine())!=null)
     	{
@@ -120,8 +123,8 @@ public class RepoCapture {
     	     //"Time","Receiver address","Destination address","Transmitter address","Source address","BSS Id","SSID"
     	     //"2014-12-17 02:45:00.641906000","ff:ff:ff:ff:ff:ff","ff:ff:ff:ff:ff:ff","8c:3a:e3:10:60:45","8c:3a:e3:10:60:45","ff:ff:ff:ff:ff:ff",""
     	     String[] splitter = linea.split(",");
-    	     String dateTimeGPS;    	     
-    	    if (splitter[0]!="\"Time\"")
+    	         	     
+    	    if (splitter[0].contains("Time")==false)
     	    {	    		
     	    Capture cap =container.newTransientInstance(Capture.class);
  			cap.setBSSId(splitter[5].replace("\"", ""));
@@ -138,7 +141,7 @@ public class RepoCapture {
     	
     	buf.close();
     	bufGPS.close();
-		return "ok";    	
+		return dateTime.toString();    	
     	
     }
 

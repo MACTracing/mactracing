@@ -1,6 +1,12 @@
 package dom.simple;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
+
 
 public class NMEA {
 	
@@ -26,6 +32,16 @@ public class NMEA {
 			med = -med;
 		}
 		return med;
+	}
+	
+	
+	//$GPRMC,024318.00,A,3857.08169,S,06801.47072,W,6.507,129.52,171214,,,A*62
+	static Date stringNMEAToDate (String gpll) throws ParseException {
+		
+		String time = gpll.split(",")[1].substring(0, 2)+" "+gpll.split(",")[1].substring(2, 4)+" "+gpll.split(",")[1].substring(4, 6)+" "+gpll.split(",")[9].substring(0, 2)+"/"+gpll.split(",")[9].substring(2, 4)+"/20"+gpll.split(",")[9].substring(4, 6);
+		SimpleDateFormat formatter = new SimpleDateFormat("HH mm ss dd/MM/yyyy");
+		Date fech = formatter.parse(time);
+		return fech;
 	}
  
 	// parsers 
