@@ -99,7 +99,7 @@ public class RepoCapture {
     	do
     	{
     		lineGPS=bufGPS.readLine();
-    		//$GPGLL,3866.63489,S,06812.71590,W,220554.00,A,A*6C
+    		
     		if (lineGPS.contains("$GPGLL"))
     		{
     			String[] cord= lineGPS.split(",");
@@ -117,15 +117,40 @@ public class RepoCapture {
     	lineFecha = bufGPS.readLine();
     	Date dateTime = NMEA.stringNMEAToDate(lineFecha);
     	
-    	while ((linea=buf.readLine())!=null)
+    	while ((linea=buf.readLine())!=null && lineGPS!=null)
     	{
     	
     	     //"Time","Receiver address","Destination address","Transmitter address","Source address","BSS Id","SSID"
     	     //"2014-12-17 02:45:00.641906000","ff:ff:ff:ff:ff:ff","ff:ff:ff:ff:ff:ff","8c:3a:e3:10:60:45","8c:3a:e3:10:60:45","ff:ff:ff:ff:ff:ff",""
     	     String[] splitter = linea.split(",");
-    	         	     
+    	     
+    	     
+    	     
+    	     
     	    if (splitter[0].contains("Time")==false)
-    	    {	    		
+    	    {
+    	    Date dateMAC =NMEA.stringMACtoDate(splitter[0].replace("\"", ""));
+    	        if (dateTime.before(dateMAC))
+    	        {
+    	        	lineGPS=bufGPS.readLine();
+    	    		
+    	    		if (lineGPS.contains("$GPGLL"))
+    	    		{
+    	    			String[] cord= lineGPS.split(",");
+    	    			if (cord[1].isEmpty() || cord[2].isEmpty() || cord[3].isEmpty() || cord[4].isEmpty())
+    	    			{
+    	    			}
+    	    			else
+    	    			{
+    	    			location = new Location(NMEA.Latitude2Decimal(cord[1], cord[2]),NMEA.Longitude2Decimal(cord[3], cord[4]));
+    	    			}	
+    	    		}  
+    	    		lineFecha = bufGPS.readLine();
+    	    		dateTime = NMEA.stringNMEAToDate(lineFecha);
+    	        }
+    	    
+    	        
+    	    texto = dateMAC.toString();
     	    Capture cap =container.newTransientInstance(Capture.class);
  			cap.setBSSId(splitter[5].replace("\"", ""));
  			cap.setReceiverAddress(splitter[1].replace("\"", ""));
@@ -141,7 +166,7 @@ public class RepoCapture {
     	
     	buf.close();
     	bufGPS.close();
-		return dateTime.toString();    	
+		return texto;    	
     	
     }
 
