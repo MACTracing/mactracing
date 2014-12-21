@@ -39,46 +39,10 @@ public class RepoCapture {
     public List<Capture> listAll() {
         return container.allInstances(Capture.class);
     }
-
-    public String captureUpload(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException {
-        
-    	File file = new File("fis");
-    	FileOutputStream fileOutputStream = new FileOutputStream(file);
-    	captureGPSFile.writeBytesTo(fileOutputStream);	
-    	fileOutputStream.close();
-    	BufferedReader buf = new BufferedReader(new FileReader(file));
-    	String linea="";
-    	while ((linea=buf.readLine())!=null)
-    	{
-    		//$GPGLL,3866.63489,S,06812.71590,W,220554.00,A,A*6C
-    		if (linea.contains("$GPGLL"))
-    		{
-    			String[] cord= linea.split(",");
-    			if (cord[1].isEmpty() || cord[2].isEmpty() || cord[3].isEmpty() || cord[4].isEmpty())
-    			{
-    			}
-    			else
-    			{
-    			Capture cap =container.newTransientInstance(Capture.class);
-    			cap.setBSSId(cord[1]);
-    			//format example 51,520283;0,082858
-    			
-    			Location location = new Location(NMEA.Latitude2Decimal(cord[1], cord[2]),NMEA.Longitude2Decimal(cord[3], cord[4]));
-    			cap.setLocation(location);
-    			container.persistIfNotAlready(cap);
-    			}
-    		}
-    	}
-    	buf.close();
-		return "ok";
-    	
-    	
-    }
-
     
     
 
-    public String captureUpload2(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException, ParseException {
+    public String captureUpload(@Named("captureMacFile") Blob captureMacFile,@Named("captureGPSFile")Blob captureGPSFile) throws IOException, ParseException {
         
     	File fileMAC = new File("mac");
     	FileOutputStream fileOutputStream = new FileOutputStream(fileMAC);
