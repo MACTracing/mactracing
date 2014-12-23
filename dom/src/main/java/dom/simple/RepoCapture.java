@@ -3,8 +3,6 @@ package dom.simple;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
@@ -12,6 +10,7 @@ import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.isis.applib.AbstractFactoryAndRepository;
 import org.apache.isis.applib.DomainObjectContainer;
 import org.apache.isis.applib.annotation.ActionSemantics;
 import org.apache.isis.applib.annotation.Bookmarkable;
@@ -19,15 +18,14 @@ import org.apache.isis.applib.annotation.DomainService;
 import org.apache.isis.applib.annotation.MemberOrder;
 import org.apache.isis.applib.annotation.Named;
 import org.apache.isis.applib.annotation.ActionSemantics.Of;
+import org.apache.isis.applib.query.QueryDefault;
 import org.apache.isis.applib.value.Blob;
-import org.isisaddons.wicket.gmap3.cpt.applib.Locatable;
 import org.isisaddons.wicket.gmap3.cpt.applib.Location;
-
 
 
 @DomainService(menuOrder = "40", repositoryFor = Capture.class)
 @Named("Capture")
-public class RepoCapture {
+public class RepoCapture extends AbstractFactoryAndRepository {
     
 	public String getId() {
         return "Capture";
@@ -134,7 +132,11 @@ public class RepoCapture {
     	
     }
 
-    
+
+    public List<Capture> listByMac(String mac) {
+    	return allMatches(QueryDefault.create(Capture.class, "traerPorMAC","mac",mac));
+        
+    }
     
     
     

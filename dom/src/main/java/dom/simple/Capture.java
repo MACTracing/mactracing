@@ -10,13 +10,23 @@ import org.apache.isis.applib.annotation.Title;
 import org.apache.isis.applib.util.ObjectContracts;
 import org.isisaddons.wicket.gmap3.cpt.applib.Locatable;
 import org.isisaddons.wicket.gmap3.cpt.applib.Location;
+import javax.jdo.annotations.Query;
+
 @javax.jdo.annotations.PersistenceCapable(identityType=IdentityType.DATASTORE)
+@javax.jdo.annotations.Queries({
+	@Query(name="traerPorMAC", language="JDOQL", value = "SELECT FROM dom.simple.Capture WHERE BSSId ==:mac || receiverAddress ==:mac ||  destinationAddress ==:mac ||  TransmitterAddress ==:mac || SourceAddress ==:mac ||  SSID ==:mac ") 
+	})
+
 @javax.jdo.annotations.DatastoreIdentity(
         strategy=javax.jdo.annotations.IdGeneratorStrategy.IDENTITY,
          column="id")
+
+
+
 @javax.jdo.annotations.Version(
         strategy=VersionStrategy.VERSION_NUMBER, 
         column="version")
+
 @ObjectType("Captura")
 @Bookmarkable
 public class Capture implements Comparable<Capture> , Locatable  {
